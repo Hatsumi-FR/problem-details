@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
-	"net/url"
 )
 
 type ProblemDetails struct {
@@ -21,22 +20,6 @@ type ProblemDetails struct {
 func NewProblemDetails(typeURI, title string, status int, detail, instance string, members map[string]string) (*ProblemDetails, error) {
 	if typeURI == "" {
 		typeURI = "about:blank"
-	} else {
-		parsedURL, err := url.Parse(typeURI)
-		if err != nil {
-			return nil, errors.New("typeURI is not a valid URL")
-		}
-		if !parsedURL.IsAbs() {
-			return nil, errors.New("typeURI is recommended to be an absolute URL")
-		}
-	}
-
-	parsedURL, err := url.Parse(instance)
-	if err != nil {
-		return nil, errors.New("instance is not a valid URL")
-	}
-	if !parsedURL.IsAbs() {
-		return nil, errors.New("instance is recommended to be an absolute URL")
 	}
 
 	if status < 400 || status > 599 {

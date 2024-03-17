@@ -21,7 +21,7 @@ The Problem Details struct represents a problem that can be returned in an HTTP 
 - Instance: A URI that identifies the specific occurrence of the problem.
 - Members: A map of additional members that may be attached to the problem details object.
 
-## Example
+## Basic usage example
 
 ```go
 package main
@@ -36,7 +36,7 @@ func main() {
 		pd, err := problem_details.NewProblemDetails(
 			"https://example.com/probs/out-of-credit",
 			"You do not have enough credit.",
-			403,
+			http.StatusPaymentRequired,
 			"Your current balance is 30, but that costs 50.",
 			"https://example.com/account/12345/msgs/abc",
 			map[string]string{
@@ -45,7 +45,7 @@ func main() {
 			},
 		)
 		if err != nil {
-		    // do something
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
 
@@ -53,6 +53,17 @@ func main() {
 	})
 
 	http.ListenAndServe(":8080", nil)
+}
+```
+
+## Response example
+
+```json
+{
+	"type": "about:blank",
+	"title": "Request body is invalid.",
+	"detail": "Field 'name' is required.",
+	"instance": "/api/articles/5"
 }
 ```
 
