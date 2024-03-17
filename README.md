@@ -4,7 +4,6 @@
 
 ```shell
 go get github.com/hatsumi-fr/problem-details
-
 ```
 
 ## Basic usage
